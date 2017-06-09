@@ -1,43 +1,114 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Spring Boot Learning</title>
+	<meta charset="UTF-8">
+	<title>Spring Boot Learning</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script>
+		var txtId = "#returnTxt";
+		function getData(id, url,retrive, para) {
+			console.log("getData: id=" + id + ",url=" + url + ", para=" + para);
+			$(id).text("click greeting link, waiting return text from " + url);
+			$.get(url, para, function(data) {
+				console.log("id: '"+id+"' function getData = " + retrive(data));
+				$(id).text(retrive(data));
+			}).fail(function() {
+				$(id).text("could not get data from " + url);
+			});
+		};
+		
+		function setupGreeting() {
+			$("#greet").click(function(){getData(txtId, "/greeting", function getGreeting(data){
+				return data.content;
+			});});
+		}
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		function setupGreetingOne() {
+			$("#greetSJ").click(function(){
+				console.log("click greetOne");
+				getData(txtId, "/greeting",function getGreeting(data){
+					console.log("get server data : " + data.content);
+					return data.content;
+				}, {name : "ShiJin"});
+			});
+		}
+		
+		function setupQuote(){
+			$("#quote").click(function(){
+				getData(txtId, "/quote", function getQuote(data){
+					return data.value.quote;
+				});
+			});
+		}
+		
+		function setupHello(){
+			$("#hello").click(function(){
+				getData(txtId, "/hello", function getQuote(data){
+					return data;
+				});
+			});
+		}
+		
+		function setupRemote() {
+			$("#remote").click(function(){
+				getData(txtId, "http://gturnquist-quoters.cfapps.io/api/random", function getQuote(data){
+					return data.value.quote;
+				});
+			});
+		}
 
-<style>
-body,p{
-	padding 70px;
-}
+		$(document).ready(function() {
+			setupGreeting();
+			setupGreetingOne();
+			setupQuote();
+			setupHello();
+			setupRemote();
+		});
 
-</style>
+	</script>
+
+	<style>
+		body,
+		p {
+			padding 70px;
+		}
+		img:hover {
+    		box-shadow: 5px 5px 30px rgba(0,0,0, .2);
+		}
+	</style>
 </head>
+
 <body>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-offset-4 col-sm-4 text-center">
-				<h2>Learning Spring Boot</h2>
+				<h2 id="title">Learning Spring Boot</h2>
 			</div>
 		</div>
 		<div class="row">
 			<p></p>
-			<div class="col-sm-offset-4 col-sm-4 text-center">
-				<a href="/hello" class="btn btn-warning">Learning Spring Boot</a>
+			<div class="col-sm-12 text-center">
+				<button id="hello" class="btn btn-warning btn-group">Learning Spring Boot</button>
+				<a id="greet" href="#" class="btn btn-info btn-group">Greeting</a>
+				<a id="greetSJ" href="#" class="btn btn-info btn-group">GreetingOne</a>
+				<button id="quote" class="btn btn-info btn-group">Quote</button>
+				<button id="remote" class="btn btn-success btn-group">Remote Quote</button>
+				<p>
+					<h3 id="returnTxt">return text here</h3>
+				</p>
 			</div>
 		</div>
 		<div class="row">
 			<p></p>
-			<div class="col-sm-offset-5 col-sm-2 text-center">
-				<img src="images/images.jpg" class="img-responsive img-circle"/>
+			<div class="col-sm-12">
+				<img src="images/images.jpg" class="img-responsive img-rounded  center-block" />
 			</div>
 		</div>
 	</div>
-	
 </body>
+
 </html>
