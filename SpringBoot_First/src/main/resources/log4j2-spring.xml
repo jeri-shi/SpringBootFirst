@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{DEFAULT} [%t] %highlight{%-5level}{TRACE=Magenta} %logger{36}:%L - %highlight{%msg}{TRACE=Magenta}}%n"/>
+    </Console>
+  </Appenders>
+  <Appenders>
+    <Console name="SpringBoot" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{DEFAULT} %highlight{%5level}{TRACE=Magenta} [%21t] %-50c{1}: %highlight{%msg}{TRACE=Magenta}%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Logger name="hello" level="trace" additivity="false">
+      <AppenderRef ref="SpringBoot"/>
+    </Logger>
+    <Root level="INFO">
+      <AppenderRef ref="SpringBoot"/>
+    </Root>
+  </Loggers>
+</Configuration>
